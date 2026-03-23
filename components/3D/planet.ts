@@ -1,4 +1,5 @@
 
+
 import * as THREE from "three";
 import gsap from "gsap";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -20,7 +21,7 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   const size = { 
     width: window.innerWidth, 
     height: window.innerHeight, 
-    pixelRatio: window.devicePixelRatio // Corrected typo
+    pixelRatio: window.devicePixelRatio 
   };
 
   const camera = new THREE.PerspectiveCamera(15, size.width / size.height, 0.1, 10000);
@@ -38,6 +39,10 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   controls.enabled = false; 
   controls.minDistance = 3.5;
   controls.maxDistance = 40;
+
+  // Track if the user has touched/dragged the globe
+  let userHasInteracted = false;
+  controls.addEventListener('start', () => { userHasInteracted = true; });
 
   // Texture Loading with BASE_PATH
   const TL = new THREE.TextureLoader();
@@ -83,7 +88,10 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   scene.add(earthGroup);
 
   const dotGroup = new THREE.Group();
-  const dots: THREE.Mesh[] = [];
+  
+  // Separate arrays: one for raycasting (hitboxes), one for visual pulsing
+  const dots: THREE.Mesh[] = []; 
+  const visualDots: THREE.Mesh[] = [];
 
   /**
    * Spherical Coordinate Mapping
@@ -101,15 +109,26 @@ const initPlanet = (onCityClick: (id: string) => void) => {
 
   CITIES.forEach((city) => {
     const radius = city.size === "big" ? 0.045 : 0.025;
+    
+    // 1. Visual red dot
     const dot = new THREE.Mesh(
       new THREE.SphereGeometry(radius, 20, 20),
       new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff0000, emissiveIntensity: 1.5 })
     );
     dot.position.copy(latLongToVector3(city.lat, city.lng, 2.02));
     dot.lookAt(0,0,0);
-    dot.userData = { id: city.id };
+    
+    // 2. Invisible Hitbox (5x larger) for easy tapping
+    const hitBox = new THREE.Mesh(
+      new THREE.SphereGeometry(radius * 5, 16, 16),
+      new THREE.MeshBasicMaterial({ visible: false })
+    );
+    hitBox.userData = { id: city.id };
+    dot.add(hitBox); // Attach hitbox to the visual dot
+
     dotGroup.add(dot);
-    dots.push(dot);
+    visualDots.push(dot); // Animate this one
+    dots.push(hitBox);    // Click this one
   });
   earthGroup.add(dotGroup);
 
@@ -145,16 +164,19 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   const tick = () => {
     const time = clock.getElapsedTime();
     
-    if (!isCityOpen) {
+    // If the user hasn't touched the globe and no city is open, auto-spin the Earth
+    if (!userHasInteracted && !isCityOpen) {
       earthGroup.rotation.y += 0.0015; 
     } else {
+      // Otherwise, keep the Earth still and move the Sun around it
       sunAngle -= 0.0015;
       const sunDir = new THREE.Vector3(Math.cos(sunAngle), 0, Math.sin(sunAngle)).normalize();
       earthMaterial.uniforms.uSunDirection.value.copy(sunDir);
       atmosphereMaterial.uniforms.uSunDirection.value.copy(sunDir);
     }
     
-    dots.forEach(d => { d.scale.setScalar(1 + Math.sin(time * 4) * 0.2); });
+    // Pulse only the visual dots
+    visualDots.forEach(d => { d.scale.setScalar(1 + Math.sin(time * 4) * 0.2); });
     controls.update();
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
