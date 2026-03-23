@@ -7,18 +7,30 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  
+  // 1. WEBPACK CONFIG: The standard engine for Next.js production builds
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      type: 'asset/source', // Native Webpack 5 method (no raw-loader needed)
+    });
+    return config;
+  },
+
+  // 2. TURBOPACK CONFIG: Just in case Next.js 16 forces it. 
+  // (Note: Removed the "**/", Turbopack only wants the extension)
   experimental: {
     turbo: {
       rules: {
-        // We'll use individual rules to be 100% safe with the file paths
-        "**/*.glsl": { loaders: ["raw-loader"], as: "*.js" },
-        "**/*.vs": { loaders: ["raw-loader"], as: "*.js" },
-        "**/*.fs": { loaders: ["raw-loader"], as: "*.js" },
-        "**/*.vert": { loaders: ["raw-loader"], as: "*.js" },
-        "**/*.frag": { loaders: ["raw-loader"], as: "*.js" },
+        "*.glsl": { loaders: ["raw-loader"], as: "*.js" },
+        "*.vs": { loaders: ["raw-loader"], as: "*.js" },
+        "*.fs": { loaders: ["raw-loader"], as: "*.js" },
+        "*.vert": { loaders: ["raw-loader"], as: "*.js" },
+        "*.frag": { loaders: ["raw-loader"], as: "*.js" },
       },
     },
   },
+  
   reactCompiler: true,
 };
 
