@@ -1,3 +1,5 @@
+
+
 export interface CityData {
   id: string;
   name: string;
@@ -6,9 +8,12 @@ export interface CityData {
   lng: number;
   size: "big" | "small";
   roles: string[];
-  imageCount: number; // Increment this when you add images to public/content/ID/
-  logo?: string; // Path relative to public/ e.g., "/content/london/londonlogo.png"
+  imageCount: number; 
+  logo?: string; 
 }
+
+// The magic string that fixes GitHub Pages 404 errors
+const BASE_PATH = "/Alex-Steven-2026-Web-Demo";
 
 export const CITIES: CityData[] = [
   {
@@ -18,9 +23,9 @@ export const CITIES: CityData[] = [
     lat: 51.5074,
     lng: -0.1278,
     size: "big",
-    roles: ["Coming Soon - 2026","Team Leader - 2025", "Kitchen Porter - 2024"],
+    roles: ["Coming Soon - 2026", "Team Leader - 2025", "Kitchen Porter - 2024"],
     imageCount: 7,
-    logo: "/public/content/london/londonlogo.png"
+    logo: `${BASE_PATH}/content/london/londonlogo.png`
   },
   {
     id: "pretoria",
@@ -31,18 +36,19 @@ export const CITIES: CityData[] = [
     size: "big",
     roles: ["Final Year Information Technology Student", "Social Media Manager", "TuksFM Presenter - 2025"],
     imageCount: 7,
-    logo: "/content/pretoria/pretorialogo.png"
+    logo: `${BASE_PATH}/content/pretoria/pretorialogo.png`
   },
   {
     id: "joburg",
     name: "HeronBridge College - Johannesburg",
     country: "South Africa",
-    lat: -28.2041,
-    lng: 27.0473,
+    // Fixed: Coordinates now point to Johannesburg instead of the Free State
+    lat: -26.2041,
+    lng: 28.0473,
     size: "big",
     roles: ["Advanced Program  Math", "Community Service Full Colours", "Full Colours for Sport"],
     imageCount: 4,
-    logo: "/content/joburg/joburglogo.png"
+    logo: `${BASE_PATH}/content/joburg/joburglogo.png`
   },
   {
     id: "capetown",
@@ -63,7 +69,7 @@ export const CITIES: CityData[] = [
     size: "small",
     roles: ["Mining Industry Internship"],
     imageCount: 5,
-    logo: "/content/bulawayo/bulawayologo.png"
+    logo: `${BASE_PATH}/content/bulawayo/bulawayologo.png`
   },
   {
     id: "sydney",
@@ -92,7 +98,8 @@ export const CITIES: CityData[] = [
     lat: 25.2048,
     lng: 55.2708,
     size: "small",
-    roles: ["Tech Hub of Africa", "Inspiring Levels Of Innovation"],
+    // Fixed: Changed "Africa" to "the Middle East"
+    roles: ["Tech Hub of the Middle East", "Inspiring Levels Of Innovation"], 
     imageCount: 3
   },
   {
@@ -132,8 +139,8 @@ export const CITIES: CityData[] = [
     lat: 33.7490,
     lng: -84.3880,
     size: "small",
-    roles: ["Currently Interning for Epi-Use","SAP Software Specialists" ], // Feel free to update this role to whatever fits best!
+    roles: ["Currently Interning for Epi-Use", "SAP Software Specialists"],
     imageCount: 1,
-    logo: "/content/atlanta/atlantalogo.png"
+    logo: `${BASE_PATH}/content/atlanta/atlantalogo.png`
   }
 ];
