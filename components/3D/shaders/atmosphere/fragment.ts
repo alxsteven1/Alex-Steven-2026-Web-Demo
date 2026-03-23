@@ -1,4 +1,5 @@
 
+
 const shader = `
 uniform vec3 uSunDirection;
 uniform vec3 uAtmosphereDayColor;
@@ -29,10 +30,10 @@ void main() {
   float alpha = edgeAlpha * dayAlpha;
 
   gl_FragColor = vec4(color, alpha);
-
-  `;
-export default shader;
   gl_FragColor.a *= uOpacity;
+
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
 }
+`;
+export default shader;
