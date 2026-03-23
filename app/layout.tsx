@@ -18,8 +18,8 @@ const appleGaramond = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "The New World | Alexander Steven",
-  description: "AI Agents and Web3D Exploration.",
+  title: "My World | Alexander Steven",
+  description: "Interactive CV Experience 2026.",
 };
 
 export default function RootLayout({
