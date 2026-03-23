@@ -1,5 +1,6 @@
 
 
+
 import * as THREE from "three";
 import gsap from "gsap";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -118,17 +119,17 @@ const initPlanet = (onCityClick: (id: string) => void) => {
     dot.position.copy(latLongToVector3(city.lat, city.lng, 2.02));
     dot.lookAt(0,0,0);
     
-    // 2. Invisible Hitbox (5x larger) for easy tapping
+    // 2. Invisible Hitbox (5x larger) for easy tapping on mobile
     const hitBox = new THREE.Mesh(
       new THREE.SphereGeometry(radius * 5, 16, 16),
       new THREE.MeshBasicMaterial({ visible: false })
     );
     hitBox.userData = { id: city.id };
-    dot.add(hitBox); // Attach hitbox to the visual dot
+    dot.add(hitBox);
 
     dotGroup.add(dot);
-    visualDots.push(dot); // Animate this one
-    dots.push(hitBox);    // Click this one
+    visualDots.push(dot); 
+    dots.push(hitBox);    
   });
   earthGroup.add(dotGroup);
 
@@ -164,19 +165,21 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   const tick = () => {
     const time = clock.getElapsedTime();
     
-    // If the user hasn't touched the globe and no city is open, auto-spin the Earth
+    // 1. Globe auto-spins ONLY until the user touches it or a city is opened
     if (!userHasInteracted && !isCityOpen) {
-      earthGroup.rotation.y += 0.0015; 
-    } else {
-      // Otherwise, keep the Earth still and move the Sun around it
-      sunAngle -= 0.0015;
-      const sunDir = new THREE.Vector3(Math.cos(sunAngle), 0, Math.sin(sunAngle)).normalize();
-      earthMaterial.uniforms.uSunDirection.value.copy(sunDir);
-      atmosphereMaterial.uniforms.uSunDirection.value.copy(sunDir);
+      earthGroup.rotation.y += 0.001; 
     }
     
-    // Pulse only the visual dots
+    // 2. Day/Night cycle ALWAYS rotates. 
+    // Speed bumped to 0.003 so the shadow sweeping is clearly visible even when Earth is totally static.
+    sunAngle -= 0.003;
+    const sunDir = new THREE.Vector3(Math.cos(sunAngle), 0, Math.sin(sunAngle)).normalize();
+    earthMaterial.uniforms.uSunDirection.value.copy(sunDir);
+    atmosphereMaterial.uniforms.uSunDirection.value.copy(sunDir);
+    
+    // 3. Pulse only the visual dots, not the massive hitboxes
     visualDots.forEach(d => { d.scale.setScalar(1 + Math.sin(time * 4) * 0.2); });
+    
     controls.update();
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
