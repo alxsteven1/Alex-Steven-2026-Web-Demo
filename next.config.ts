@@ -1,14 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  output: 'export', // Required for GitHub Pages
+  output: 'export', 
   images: {
-    unoptimized: true, // Required because GitHub Pages can't optimize images on the fly
+    unoptimized: true, 
   },
   turbopack: {
     rules: {
-      "*.{glsl,vs,fs,vert,frag}": {
+      // "**/ " tells Next.js to search through ALL subdirectories
+      "**/*.{glsl,vs,fs,vert,frag}": {
         loaders: ["raw-loader"],
         as: "*.js",
       },
