@@ -1,0 +1,152 @@
+.hero_main {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #1b2023; /* Dark background locked in */
+}
+
+.hero_main .planet-3D {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 2;
+  outline: none;
+}
+
+/* Invisible overlay to trigger the intro */
+.intro-trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 5%;
+}
+
+.pulse-text {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.hero_main .content {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: 1200px;
+  width: 90%;
+  z-index: 1;
+  perspective: 1000px; /* Crucial for 3D tumbling effect */
+}
+
+/* Placed above the small Earth */
+.top-text {
+  top: 15%; 
+}
+
+/* Placed below the small Earth */
+.bottom-text {
+  bottom: 15%; 
+}
+
+.hero_main .content h1 {
+  font-family: var(--font-apple-garamond), serif;
+  font-weight: 500; 
+  font-size: 5.5rem; 
+  line-height: 1.1;
+  color: #ffffff;
+  margin: 0;
+  text-shadow:
+    0 1px 0 #cccccc,
+    0 2px 0 #c9c9c9,
+    0 3px 0 #bbbbbb,
+    0 4px 0 #b9b9b9,
+    0 5px 0 #aaaaaa,
+    0 6px 1px rgba(0,0,0,.1),
+    0 0 5px rgba(0,0,0,.1),
+    0 1px 3px rgba(0,0,0,.3),
+    0 3px 5px rgba(0,0,0,.2),
+    0 5px 10px rgba(0,0,0,.25),
+    0 10px 10px rgba(0,0,0,.2),
+    0 20px 20px rgba(0,0,0,.15);
+}
+
+.hero_main .content p {
+  color: #d0d0d0; 
+  font-size: 1.8rem; 
+  margin: 0;
+  font-family: var(--font-apple-garamond), serif;
+}
+
+/* Makes individual letters animatable */
+.letter {
+  display: inline-block;
+  transform-style: preserve-3d;
+  white-space: pre; /* Preserves spaces */
+}
+
+/* Glass UI Overlay for City Interaction */
+.ui-overlay {
+  position: fixed; inset: 0; z-index: 100; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: space-between; padding: 50px;
+  overflow-y: auto; /* Allow scrolling if screen is too short */
+}
+
+.ui-overlay.active { pointer-events: auto; }
+
+.card {
+  background: rgba(18, 18, 20, 0.9);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px; padding: 30px; width: 100%; max-width: 420px; color: white;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.info-card { align-self: flex-start; }
+.photo-card { align-self: flex-end; }
+
+.blur-in { animation: blurFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes blurFadeIn {
+  from { opacity: 0; filter: blur(15px); transform: translateY(20px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+.location-pill {
+  background: rgba(255, 255, 255, 0.1); padding: 6px 14px; border-radius: 100px; font-size: 0.8rem; text-transform: uppercase;
+}
+
+.title-block { display: flex; justify-content: space-between; align-items: center; margin: 15px 0 20px; }
+.wimbledon-logo { height: 40px; }
+.role-entry { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 1.2rem; }
+.carousel-image { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 14px; }
+.carousel-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+
+/* FIX: Forces indicators into a horizontal row */
+.carousel-indicators { display: flex; flex-direction: row; gap: 8px; justify-content: center; align-items: center; }
+
+.indicator { width: 6px; height: 6px; background: #555; border-radius: 50%; transition: 0.3s; flex-shrink: 0; }
+.indicator.active { background: white; width: 18px; border-radius: 10px; }
+
+.close-btn {
+  position: absolute; top: 30px; right: 30px; background: white; color: black; border: none; padding: 10px 20px; border-radius: 100px; font-weight: bold; cursor: pointer;
+  z-index: 1000; /* FIX: Keeps button on top of everything */
+}
+
+@media (max-width: 768px) {
+  .hero_main .content h1 { font-size: 3rem; }
+  .ui-overlay { padding: 20px; padding-top: 80px; } /* Gives room for the close button so cards don't hit it */
+  .card { max-width: 100%; margin-bottom: 20px; }
+  .close-btn { position: fixed; top: 20px; right: 20px; } /* FIX: Stays perfectly pinned to the screen */
+  .photo-card { align-self: center; }
+}
