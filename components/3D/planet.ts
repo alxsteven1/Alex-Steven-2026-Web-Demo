@@ -1,6 +1,5 @@
 
 
-
 import * as THREE from "three";
 import gsap from "gsap";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -11,6 +10,9 @@ import earthFragment from "./shaders/earth/fragment.glsl";
 import atmosphereVertex from "./shaders/atmosphere/vertex.glsl";
 import atmosphereFragment from "./shaders/atmosphere/fragment.glsl";
 
+// Change this to match your repository name
+const BASE_PATH = "/Alex-Steven-2026-Web-Demo";
+
 const initPlanet = (onCityClick: (id: string) => void) => {
   const canvas = document.querySelector("canvas.planet-3D") as HTMLCanvasElement;
   if (!canvas) return;
@@ -19,17 +21,16 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   const size = { 
     width: window.innerWidth, 
     height: window.innerHeight, 
-    pixelRation: window.devicePixelRatio 
+    pixelRatio: window.devicePixelRatio // Corrected typo
   };
 
   const camera = new THREE.PerspectiveCamera(15, size.width / size.height, 0.1, 10000);
-  // Start way backed out to see the whole globe in the center
   camera.position.set(0, 0, 30); 
   scene.add(camera);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(size.width, size.height);
-  renderer.setPixelRatio(size.pixelRation);
+  renderer.setPixelRatio(size.pixelRatio);
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -39,10 +40,11 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   controls.minDistance = 3.5;
   controls.maxDistance = 40;
 
+  // Texture Loading with BASE_PATH
   const TL = new THREE.TextureLoader();
-  const dayTexture = TL.load("./earth/day.jpg");
-  const nightTexture = TL.load("./earth/night.jpg");
-  const specularCloudsTexture = TL.load("./earth/specularClouds.jpg");
+  const dayTexture = TL.load(`${BASE_PATH}/earth/day.jpg`);
+  const nightTexture = TL.load(`${BASE_PATH}/earth/night.jpg`);
+  const specularCloudsTexture = TL.load(`${BASE_PATH}/earth/specularClouds.jpg`);
   dayTexture.colorSpace = nightTexture.colorSpace = THREE.SRGBColorSpace;
 
   const earthGeometry = new THREE.SphereGeometry(2, 64, 64);
@@ -83,6 +85,11 @@ const initPlanet = (onCityClick: (id: string) => void) => {
 
   const dotGroup = new THREE.Group();
   const dots: THREE.Mesh[] = [];
+
+  /**
+   * Spherical Coordinate Mapping
+   * Converts Latitude/Longitude to 3D Cartesian space
+   */
   const latLongToVector3 = (lat: number, lng: number, radius: number) => {
     const phi = (90 - lat) * (Math.PI / 180);
     const theta = (lng + 180) * (Math.PI / 180);
@@ -108,7 +115,6 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   earthGroup.add(dotGroup);
 
   let isCityOpen = false;
-  let introDone = false;
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
@@ -141,10 +147,8 @@ const initPlanet = (onCityClick: (id: string) => void) => {
     const time = clock.getElapsedTime();
     
     if (!isCityOpen) {
-      // Earth spins while the sun stays fixed. This naturally creates the day/night cycle sweeping across the land.
       earthGroup.rotation.y += 0.0015; 
     } else {
-      // When zoomed into a city, the Earth stops spinning. We move the sun instead to simulate passing time.
       sunAngle -= 0.0015;
       const sunDir = new THREE.Vector3(Math.cos(sunAngle), 0, Math.sin(sunAngle)).normalize();
       earthMaterial.uniforms.uSunDirection.value.copy(sunDir);
@@ -161,18 +165,15 @@ const initPlanet = (onCityClick: (id: string) => void) => {
   return {
     destroy: () => { window.removeEventListener("click", onMouseClick); renderer.dispose(); },
     
-    // EXPOSED INTRO FUNCTION
     playIntro: () => {
       canvas.style.pointerEvents = "none";
       const tl = gsap.timeline({
         onComplete: () => { 
           controls.enabled = true; 
           canvas.style.pointerEvents = "auto";
-          introDone = true;
         }
       });
 
-      // 1. Letters fall down, randomly scatter, and flip backwards as they "slide" off the globe
       tl.to(".top-text h1 .letter", {
         y: "40vh",
         x: () => (Math.random() - 0.5) * 200, 
@@ -196,7 +197,6 @@ const initPlanet = (onCityClick: (id: string) => void) => {
         ease: "power2.in"
       }, 0.2);
 
-      // 2. Camera zooms in dynamically to frame the default working website
       tl.to(camera.position, {
         x: 0,
         y: 0,
