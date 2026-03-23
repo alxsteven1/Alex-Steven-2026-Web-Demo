@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     rules: {
-      // "**/ " tells Next.js to search through ALL subdirectories
+      // The "**/" is the fix—it tells Turbopack to look in ALL subfolders
       "**/*.{glsl,vs,fs,vert,frag}": {
         loaders: ["raw-loader"],
         as: "*.js",
