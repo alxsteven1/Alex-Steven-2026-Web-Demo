@@ -20,7 +20,7 @@ export const CITIES: CityData[] = [
     size: "big",
     roles: ["Coming Soon - 2026","Team Leader - 2025", "Kitchen Porter - 2024"],
     imageCount: 7,
-    logo: "/content/london/londonlogo.png"
+    logo: "/public/content/london/londonlogo.png"
   },
   {
     id: "pretoria",
