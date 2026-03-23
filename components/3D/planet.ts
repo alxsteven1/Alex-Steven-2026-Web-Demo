@@ -1,14 +1,13 @@
 
-
 import * as THREE from "three";
 import gsap from "gsap";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { CITIES } from "@/config/cities";
 
-import earthVertex from "./shaders/earth/vertex.glsl";
-import earthFragment from "./shaders/earth/fragment.glsl";
-import atmosphereVertex from "./shaders/atmosphere/vertex.glsl";
-import atmosphereFragment from "./shaders/atmosphere/fragment.glsl";
+import earthVertex from "./shaders/earth/vertex";
+import earthFragment from "./shaders/earth/fragment";
+import atmosphereVertex from "./shaders/atmosphere/vertex";
+import atmosphereFragment from "./shaders/atmosphere/fragment";
 
 // Change this to match your repository name
 const BASE_PATH = "/Alex-Steven-2026-Web-Demo";
