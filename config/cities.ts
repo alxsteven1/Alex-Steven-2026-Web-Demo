@@ -43,8 +43,8 @@ export const CITIES: CityData[] = [
     name: "HeronBridge College - Johannesburg",
     country: "South Africa",
     // Fixed: Coordinates now point to Johannesburg instead of the Free State
-    lat: -26.2041,
-    lng: 28.0473,
+    lat: -26.4041,
+    lng: 27.0473,
     size: "big",
     roles: ["Advanced Program  Math", "Community Service Full Colours", "Full Colours for Sport"],
     imageCount: 4,
