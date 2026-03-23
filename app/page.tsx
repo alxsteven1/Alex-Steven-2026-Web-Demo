@@ -5,6 +5,9 @@ import { useEffect, useState, useRef } from "react";
 import initPlanet3D from "@/components/3D/planet";
 import { CITIES, CityData } from "@/config/cities";
 
+// Add the base path to map to your GitHub repository
+const BASE_PATH = "/Alex-Steven-2026-Web-Demo";
+
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState<CityData | null>(null);
   const [imgIndex, setImgIndex] = useState(0);
@@ -86,7 +89,9 @@ export default function Home() {
           </div>
           <div className="card photo-card blur-in">
             <div className="carousel-container">
-              <img src={`/content/${selectedCity.id}/${selectedCity.id}${imgIndex + 1}.png`} className="carousel-image" alt="Experience" />
+              {/* FIX: Injected BASE_PATH into the carousel image source */}
+              <img src={`${BASE_PATH}/content/${selectedCity.id}/${selectedCity.id}${imgIndex + 1}.png`} className="carousel-image" alt="Experience" />
+              
               {selectedCity.imageCount > 1 && (
                 <div className="carousel-controls">
                   <button onClick={() => setImgIndex(prev => (prev - 1 + selectedCity.imageCount) % selectedCity.imageCount)}>◀</button>
