@@ -85,8 +85,8 @@ export const CITIES: CityData[] = [
     id: "paris",
     name: "Paris",
     country: "France",
-    lat: 48.8566,
-    lng: 2.3522,
+    lat: 47.8566,
+    lng: 1.9022,
     size: "small",
     roles: ["The Most Beautiful City In The World"],
     imageCount: 5
