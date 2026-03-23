@@ -1,4 +1,4 @@
-uniform sampler2D uDayTexture;
+const shader = ` uniform sampler2D uDayTexture;
 uniform sampler2D uNightTexture;
 uniform sampler2D uSpecularCloudsTexture;
 uniform vec3 uSunDirection;
@@ -47,3 +47,5 @@ void main() {
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
 }
+`;
+export default shader;
