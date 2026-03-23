@@ -2,15 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'export',
-  // Change this to match your EXACT repository name on GitHub
-  basePath: '/Alex-Steven-2026-Web-Demo', 
+  // Matches your GitHub repo name exactly
+  basePath: '/Alex-Steven-2026-Web-Demo',
   assetPrefix: '/Alex-Steven-2026-Web-Demo',
   images: {
     unoptimized: true,
   },
-  turbopack: {
+  // CHANGE THIS LINE: Renamed from 'turbopack' to 'turbo'
+  turbo: { 
     rules: {
-      // The "**/" is the magic fix for your subfolder shaders
       "**/*.{glsl,vs,fs,vert,frag}": {
         loaders: ["raw-loader"],
         as: "*.js",
