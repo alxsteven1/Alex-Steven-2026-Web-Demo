@@ -106,8 +106,8 @@ export const CITIES: CityData[] = [
     id: "amsterdam",
     name: "Amsterdam",
     country: "Netherlands",
-    lat: 52.3676,
-    lng: 4.9041,
+    lat: 52.2276,
+    lng: 6.0041,
     size: "small",
     roles: ["Contiki - 2022"],
     imageCount: 5
