@@ -1,4 +1,4 @@
-varying vec2 vUv;
+const shader = ` varying vec2 vUv;
 varying vec3 vNormal;
 varying vec3 vPosition;
 
@@ -14,4 +14,6 @@ void main() {
     vUv = uv;
     vNormal = modelNormal;
     vPosition = modelPosition.xyz;
-}
+}  
+`;
+export default shader;
