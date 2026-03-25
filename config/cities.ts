@@ -13,7 +13,7 @@ export interface CityData {
 }
 
 // The magic string that fixes GitHub Pages 404 errors
-const BASE_PATH = "/Alex-Steven-2026-Web-Demo";
+const BASE_PATH = "";
 
 export const CITIES: CityData[] = [
   {
