@@ -12,7 +12,7 @@ import atmosphereVertex from "./shaders/atmosphere/vertex";
 import atmosphereFragment from "./shaders/atmosphere/fragment";
 
 // Change this to match your repository name
-const BASE_PATH = "/Alex-Steven-2026-Web-Demo";
+const BASE_PATH = "";
 
 const initPlanet = (onCityClick: (id: string) => void) => {
   const canvas = document.querySelector("canvas.planet-3D") as HTMLCanvasElement;
