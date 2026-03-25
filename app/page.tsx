@@ -6,7 +6,7 @@ import initPlanet3D from "@/components/3D/planet";
 import { CITIES, CityData } from "@/config/cities";
 
 // Add the base path to map to your GitHub repository
-const BASE_PATH = "/Alex-Steven-2026-Web-Demo";
+const BASE_PATH = "";
 
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState<CityData | null>(null);
